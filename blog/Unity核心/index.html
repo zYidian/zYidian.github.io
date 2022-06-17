@@ -1,0 +1,558 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unity核心 | blog-Chou</title><meta name="keywords" content="C++,Unity,算法,图形学"><meta name="author" content="Chou"><meta name="copyright" content="Chou"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1、图片导入设置1.1 图片导入概述Unity中使用最多的图片格式是：JPG、PNG、TGA 三种 图片设置的6大部分   纹理类型 纹理形状 高级设置 平铺拉伸 平台窗口 预览窗口  1.2 纹理类型设置 设置纹理类型主要是为了让纹理图片有不同的主要用途  default：默认贴图纹理，大部分导入的模型贴图都是该类型  sRGB：默认勾选，作用是让我们看到的颜色更自然 Alpha Source：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity核心">
+<meta property="og:url" content="https://github.com/zYidian/zYidian.github.io/blog/Unity%E6%A0%B8%E5%BF%83/index.html">
+<meta property="og:site_name" content="blog-Chou">
+<meta property="og:description" content="1、图片导入设置1.1 图片导入概述Unity中使用最多的图片格式是：JPG、PNG、TGA 三种 图片设置的6大部分   纹理类型 纹理形状 高级设置 平铺拉伸 平台窗口 预览窗口  1.2 纹理类型设置 设置纹理类型主要是为了让纹理图片有不同的主要用途  default：默认贴图纹理，大部分导入的模型贴图都是该类型  sRGB：默认勾选，作用是让我们看到的颜色更自然 Alpha Source：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/zYidian/zYidian.github.io/media/top_img.jpg">
+<meta property="article:published_time" content="2022-06-17T03:05:34.000Z">
+<meta property="article:modified_time" content="2022-06-17T03:05:57.228Z">
+<meta property="article:author" content="Chou">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="图形学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/zYidian/zYidian.github.io/media/top_img.jpg"><link rel="shortcut icon" href="/media/favicon.png"><link rel="canonical" href="https://github.com/zYidian/zYidian.github.io/blog/Unity%E6%A0%B8%E5%BF%83/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Unity核心',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-17 11:05:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    document.addEventListener('pjax:complete', detectApple)})(window)</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://img1.baidu.com/it/u=223483055,1110828441&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=400&amp;h=400" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/media/top_img.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">blog-Chou</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Unity核心</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-17T03:05:34.000Z" title="发表于 2022-06-17 11:05:34">2022-06-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-17T03:05:57.228Z" title="更新于 2022-06-17 11:05:57">2022-06-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Unity/">Unity</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Unity核心"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="1、图片导入设置"><a href="#1、图片导入设置" class="headerlink" title="1、图片导入设置"></a>1、图片导入设置</h2><h3 id="1-1-图片导入概述"><a href="#1-1-图片导入概述" class="headerlink" title="1.1 图片导入概述"></a>1.1 图片导入概述</h3><p>Unity中使用最多的图片格式是：<strong>JPG、PNG、TGA</strong> 三种</p>
+<p>图片设置的6大部分</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/2D%E5%9B%BE%E7%89%87%E7%9B%B8%E5%85%B3%E9%9D%A2%E6%9D%BF.png" class="" title="2D图片相关面板">
+<ol>
+<li>纹理类型</li>
+<li>纹理形状</li>
+<li>高级设置</li>
+<li>平铺拉伸</li>
+<li>平台窗口</li>
+<li>预览窗口</li>
+</ol>
+<h3 id="1-2-纹理类型设置"><a href="#1-2-纹理类型设置" class="headerlink" title="1.2 纹理类型设置"></a>1.2 纹理类型设置</h3><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220404225010243.png" class="" title="image-20220404225010243">
+<p>设置纹理类型主要是为了让<strong>纹理图片有不同的主要用途</strong></p>
+<ul>
+<li><p>default：默认贴图纹理，大部分导入的模型贴图都是该类型</p>
+<ul>
+<li>sRGB：默认勾选，作用是让我们看到的颜色更自然</li>
+<li><strong>Alpha Source</strong>：指定如何生成纹理的Alpha通道<ul>
+<li>None：无论输入纹理是否有Alpha通道，导入的纹理都没有Alpha通道</li>
+<li><strong>Input Texture Alpha</strong>：输入纹理中的Alpha。适用于带Alpha通道的图片</li>
+</ul>
+</li>
+<li>Alpha Is Transparency：启用可以避免边缘上的过滤瑕疵</li>
+</ul>
+</li>
+<li><p>Normal map：法线贴图纹理</p>
+</li>
+<li><p>Editor GUI：编辑GUI</p>
+</li>
+<li><p>Sprite：2D游戏和UI相关内容</p>
+</li>
+</ul>
+<h2 id="2、Sprite"><a href="#2、Sprite" class="headerlink" title="2、Sprite"></a>2、Sprite</h2><h3 id="2-1-SpriteEditor"><a href="#2-1-SpriteEditor" class="headerlink" title="2.1 SpriteEditor"></a>2.1 SpriteEditor</h3><p>SpriteEditor 是精灵图片编辑器，主要用于编辑2D游戏开发时 使用的Sprite精灵图片</p>
+<p>作用：</p>
+<p>主要用于编辑图集中<strong>提取元素</strong>、设置<strong>精灵边框</strong>、设置<strong>九宫格</strong>、设置<strong>轴心</strong>等功能</p>
+<blockquote>
+<p>要将图片的类型设置为Sprite 才能使用</p>
+</blockquote>
+<p>注意：</p>
+<p>如果当前工程为3D工程的话，需要按照2D Sprite包才能使用SpriteEditor</p>
+<p><strong>SpriteEditor参数</strong> </p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220405143126640.png" class="" title="image-20220405143126640">
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220405143114301.png" class="" title="image-20220405143114301">
+<h4 id="Muleiple-图集元素分割"><a href="#Muleiple-图集元素分割" class="headerlink" title="Muleiple 图集元素分割"></a><strong>Muleiple</strong> 图集元素分割</h4><p>当图片资源为<strong>图集</strong>时，需要将模式设置为<strong>Multiple</strong>，就可以使用Sprite Editor对图集元素进行分割</p>
+<p>详细参数移步文档</p>
+<ul>
+<li>进行图集元素切割时，一般使用<strong>Automatic</strong>(自动切割),再配合<strong>Trim</strong>手动调整，普遍性更高</li>
+<li><strong>Grid By Cell Size</strong>(按单元格大小分割),该模式适用于符合单元格规范的图集</li>
+<li></li>
+</ul>
+<h3 id="2-2-Sprite-Renderer"><a href="#2-2-Sprite-Renderer" class="headerlink" title="2.2 Sprite Renderer"></a>2.2 <strong>Sprite Renderer</strong></h3><p><strong>Sprite Renderer</strong>是精灵渲染器组件，2D游戏中的<strong>所有资源都是通过Sprite Renderer让我们看到</strong>(UI除外)</p>
+<p><strong>2D对象的创建</strong></p>
+<ul>
+<li>直接拖入Sprite图片<ol>
+<li>可以将类型为<strong>Sprite</strong>的图片直接拖入场景中，就能完成创建</li>
+<li>该图片的本质 其实就是空物体<strong>挂载了Sprite Renderer组件</strong></li>
+<li>而Sprite Renderer组件上的<strong>Sprite参数关联了</strong>拖入场景的<strong>图片</strong>，所以就能看到</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>通过Hierarchy窗口 <strong>右键</strong>创建<strong>2D Object</strong> 中的<strong>Sprite</strong><ol>
+<li>此时就会出现一个挂载了<strong>Sprite Renderer</strong>组件的<strong>空对象</strong></li>
+<li>将需要创建的图片，直接关联到该组件的Sprite中，即可完成创建</li>
+</ol>
+</li>
+</ul>
+<p>组件参数：详细参数移步文档</p>
+<p><strong>代码设置</strong></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//动态创建对象，为其添加精灵渲染器组件</span></span><br><span class="line">GameObject obj = <span class="keyword">new</span> GameObject();</span><br><span class="line">SpriteRenderer sr = obj.AddComponent&lt;SpriteRenderer&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">//为渲染器动态加载添加图片</span></span><br><span class="line">sr.sprite = Resources.Load&lt;Sprite&gt;(<span class="string">&quot;test&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//动态加载图集</span></span><br><span class="line">Sprite[] sprs = Resources.LoadAll&lt;Sprite&gt;(<span class="string">&quot;Test&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//将图集中的第一张图关联到渲染器中</span></span><br><span class="line">sr.sprite = sprs[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//颜色更改</span></span><br><span class="line">sr.color;</span><br><span class="line"></span><br><span class="line"><span class="comment">//反转</span></span><br><span class="line">sr.flipX;</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<p>1、写一个工具类，更好的加载Multiple类型的图集资源</p>
+<h3 id="2-3-Sprite-Creator"><a href="#2-3-Sprite-Creator" class="headerlink" title="2.3 Sprite Creator"></a>2.3 Sprite Creator</h3><p>利用Sprite Editor的多边形工具创建出各种多边形</p>
+<p>主要用于，在等待美术资源前的一个替代品</p>
+<p><strong>使用Sprite Creator</strong></p>
+<p>在Project窗口 右键Create 选择其中的<strong>Sprites</strong></p>
+<hr>
+<h2 id="3、2D物理系统"><a href="#3、2D物理系统" class="headerlink" title="3、2D物理系统"></a>3、2D物理系统</h2><h3 id="3-1-2D刚体"><a href="#3-1-2D刚体" class="headerlink" title="3.1 2D刚体"></a>3.1 2D刚体</h3><p>参数面板相关：</p>
+<p>Metarial：物理材质，一般不在刚体上设置，它会默认使用碰撞器的物理材质</p>
+<p>Simulated：默认启动，能够模拟物理效果</p>
+<p>Use Auto Mass：是否使用自动质量，默认不启动</p>
+<p>Linear Dray：影响位移的阻力</p>
+<p>Angular Dray：影响旋转移动的阻力</p>
+<p>Gravity Scale：受重力影响的程度</p>
+<p>Sleeping Mode：对象处于静止状态时进入睡眠模式</p>
+<p>​        1、Never Sleep：从不休眠，会一直进行检测</p>
+<p>​        2、Start Awake：最初处于唤醒状态，静止时休眠，适用于 移动物体</p>
+<p>​        3、Start Asleep：最初处于睡眠状态、被碰撞时唤醒。适用于 静止物体</p>
+<p>如何选择不同类型的刚体</p>
+<p>Dynamic 动态刚体：受力的作用，要动要碰的对象</p>
+<p>Kinematic 运动学刚体：通过刚体API移动的对象，不受力的作用，会进行碰撞检测</p>
+<p>Static 静态刚体：不动不受力作用的静态物体，会进行碰撞检测</p>
+<p><strong>刚体API</strong></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Rigidbody2D rigid = <span class="keyword">this</span>.GetComponent&lt;Rigibody2D&gt;();</span><br><span class="line">right.AddForce(<span class="keyword">new</span> Vector2(<span class="number">0.100</span>)); <span class="comment">//添加力</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-2-物理材质"><a href="#3-2-物理材质" class="headerlink" title="3.2 物理材质"></a>3.2 物理材质</h3><p>物理材质是用于决定 在物体产生碰撞时的摩擦和弹性表现</p>
+<p>通过物理材质，可以做出类型 斜坡不划落，小球反弹等效果</p>
+<p>创建物理材质：</p>
+<p>通过右键选择Create，找到Physics Material 2D，进行创建</p>
+<p>物理材质的使用：</p>
+<p>将创建好的物理材质，拖动到碰撞器的Material 参数中</p>
+<h3 id="3-3-恒定力"><a href="#3-3-恒定力" class="headerlink" title="3.3 恒定力"></a>3.3 恒定力</h3><p>恒定力是一个特殊的脚本，它可以个2D刚体一个持续添加一个力</p>
+<p>适用随着时间推移而加速的对象，比如火箭发射等效果</p>
+<p>恒定力脚本会线性的为对象添加<strong>力和扭矩力</strong></p>
+<h3 id="3-4-效应器"><a href="#3-4-效应器" class="headerlink" title="3.4 效应器"></a>3.4 效应器</h3><p>2D效应器一般配合2D碰撞器一起使用</p>
+<p>可以让游戏对象在相互接触时产生一些特殊的物理作用力</p>
+<p>比如<strong>传送带、互斥、吸引、漂浮、单向碰撞</strong>等效果</p>
+<p><strong>区域效应器</strong>：Area Effector2D</p>
+<p>控制力的方向，可以实现传送带和向上弹簧的效果</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220406161338789.png" class="" title="image-20220406161338789">
+<p><strong>浮力效应器</strong>：Buoyancy Effector2D</p>
+<p>模拟流体行为，浮动和阻力相关设置，让该区域玩家看起来像在水里移动</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220406161400689.png" class="" title="image-20220406161400689">
+<p><strong>点效应器</strong>：Point Effector 2D</p>
+<p>模拟磁铁的排斥或吸引</p>
+<p>将该效应器放到磁铁上，然后只对<strong>铁</strong>层级的物品有效，就能完成磁铁效果</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220406162127627.png" class="" title="image-20220406162127627">
+<p><strong>平台效应器</strong>：Platform Effector 2D</p>
+<p>2D游戏中的平台 或可往上跳跃的墙壁</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220406162741068.png" class="" title="image-20220406162741068">
+<p>表面效应器：Surface Effector 2D</p>
+<p>表面效应器不需要勾选Is Trigger,主要用于模拟传送带</p>
+<p>若要实现物体在传送到上打滚的功能，则勾选Use Contact Force</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220406163353466.png" class="" title="image-20220406163353466">
+<h2 id="4、SpriteShape"><a href="#4、SpriteShape" class="headerlink" title="4、SpriteShape"></a>4、SpriteShape</h2><p>SpriteShape是精灵形状的意思。</p>
+<p>主要用于节约美术资源为前提，<strong>制作</strong>2D游戏场景<strong>地形</strong> 或者 <strong>背景</strong></p>
+<h2 id="5、Tilemap"><a href="#5、Tilemap" class="headerlink" title="5、Tilemap"></a>5、Tilemap</h2><p>Tilemap一般被称为 <strong>瓦片地图</strong>或者<strong>平铺地图</strong></p>
+<p>主要用于快速编辑2D游戏中的场景</p>
+<p>工作原理是 用小图排列组合成一张大地图</p>
+<h3 id="5-1-Tilemap的最小单位—瓦片"><a href="#5-1-Tilemap的最小单位—瓦片" class="headerlink" title="5.1 Tilemap的最小单位—瓦片"></a>5.1 Tilemap的最小单位—<strong>瓦片</strong></h3><p><strong>创建瓦片的方法</strong></p>
+<ol>
+<li>Window-2D-Tile Palette瓦片调色板窗口创建</li>
+<li>点击左边<strong>Create New Palette</strong>，然后选择存储路径</li>
+<li>将需要的资源拖入到Palette窗口中，并选择需要保存的路径。就能成功创建瓦片</li>
+</ol>
+<p><strong>瓦片面板参数</strong></p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220406204048128.png" class="" title="image-20220406204048128">
+<h3 id="5-2-瓦片调色板窗口"><a href="#5-2-瓦片调色板窗口" class="headerlink" title="5.2 瓦片调色板窗口"></a>5.2 瓦片调色板窗口</h3><p><strong>创建调色板窗口相关</strong></p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220406204944178.png" class="" title="image-20220406204944178">
+<ul>
+<li>Rectangle：矩形瓦片适合2D 横版游戏</li>
+<li>Hexagon：六边形瓦片适合SLG策略游戏</li>
+<li>Isometric：等距瓦片，可以进行上下移动</li>
+<li>Isometric Z as Y：与前者类似，只不过多了一个Z轴，转化局部的Y轴，模拟伪Z轴</li>
+</ul>
+<p><strong>窗口操作技巧</strong></p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220406205817939.png" class="" title="image-20220406205817939">
+<p><strong>编辑瓦片地图</strong></p>
+<ol>
+<li>创建好瓦片调色板窗口</li>
+<li>将需要用到的所用地形素材全部拖入到调色板中</li>
+<li>在Hierarchy面板中创建2D Object中的<strong>Tilemap</strong>，选择合适的瓦片网格布局</li>
+<li>首先在调色板窗口点击<strong>Edit</strong>，启用编辑窗口</li>
+<li>然后用<strong>吸管工具</strong> 吸取想要创建的地图，就可以直接在Scene窗口进行绘制</li>
+</ol>
+<p><strong>Isometric Z as Y 瓦片地图注意事项</strong></p>
+<ul>
+<li>这种等距瓦片具有Z轴的概念<ol>
+<li>这就导致了瓦片图片和菱形地面具有一个高度差，两者不能贴合，这是图片的<strong>轴心点</strong>照成的</li>
+<li>将图片的轴心点移动到 <strong>图片居中</strong>位置，就能解决高度差问题</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>在3D游戏中，默认是由Z轴，来决定对象的深度，但2D游戏并没有Z轴，所以适用等距瓦片时要更改下默认的设置<ol>
+<li>在Unity编辑器的<strong>Edit</strong>窗口，选择<strong>Project Setting</strong>，再选择<strong>Graphics</strong>。最后将<strong>Transparency Sort Mode</strong>(排序模式)改为Custom Axis(自定义轴)进行排序</li>
+<li>然后将下方<strong>Transparency Sort Axis</strong> 的参数改为<strong>(0,1,-0.26)</strong></li>
+<li>设置完参数后，将<strong>Tiemap Renderer</strong>脚本中的<strong>Mode</strong>(渲染模式)改为<strong>Individual</strong></li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>也可以不通过更改轴心点的方式，解决高度差的问题<ol>
+<li>通过取消勾选下方的Lock Z Position</li>
+<li>然后吸取图片后，就能通过加号和减号来控制高度</li>
+</ol>
+</li>
+</ul>
+<h3 id="5-3-瓦片地图关键脚本和碰撞器"><a href="#5-3-瓦片地图关键脚本和碰撞器" class="headerlink" title="5.3 瓦片地图关键脚本和碰撞器"></a>5.3 瓦片地图关键脚本和碰撞器</h3><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220406221746677.png" class="" title="image-20220406221746677">
+<h3 id="5-4-示例"><a href="#5-4-示例" class="headerlink" title="5.4 示例"></a>5.4 示例</h3><p>使用等距瓦片创建地图，并实现人物在地图上的移动</p>
+<p>注意事项：</p>
+<p>人物导入之前</p>
+<ul>
+<li><p>需要将人物的轴心点改到图片人物的脚底位置</p>
+</li>
+<li><p>然后将Sprite Renderer 中的<strong>Sprite sort Point</strong>(排序点)修改为<strong>Pivot</strong>，就能让人物底部出现在地面上</p>
+</li>
+</ul>
+<p>地图资源导入前</p>
+<ul>
+<li>需要将瓦片地图的轴心点移动到地图表面的中央，使其“下沉”,用于制作地面<ol>
+<li>将轴心点移动到瓦片地图下方的中央，可以使其“上抬”,用于制作墙体</li>
+</ol>
+</li>
+</ul>
+<p>等距瓦片的地图排序问题</p>
+<ul>
+<li>排序层相同时，会通过轴心点的Y轴进行渲染图片，轴心点低的渲染在前方，高的渲染在后方(排序方式一定要修改为<strong>Pivot</strong>)</li>
+<li>若排序层不同，则优选排序层的大小进行渲染，排序层大的渲染在前方，小的渲染在后方</li>
+</ul>
+<p>等距瓦片地图碰撞相关问题</p>
+<ul>
+<li>若地图地面添加碰撞器，则人物则不能在表面移动。</li>
+<li>取消人物的重力，就能解决单个碰撞器下落的问题</li>
+<li>等距瓦片的碰撞类型选择<strong>Grid</strong></li>
+</ul>
+<h2 id="6、Animation"><a href="#6、Animation" class="headerlink" title="6、Animation"></a>6、Animation</h2><p>打开Window-&gt;Animation-&gt; Animation 就能打开动画窗口</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220407111739539.png" class="" title="image-20220407111739539">
+<h3 id="6-1-创建编辑Animation"><a href="#6-1-创建编辑Animation" class="headerlink" title="6.1 创建编辑Animation"></a>6.1 创建编辑Animation</h3><p>创建动画</p>
+<ul>
+<li>在场景中选中想要创建的动画对象</li>
+<li>在Animation窗口中点击创建</li>
+<li>选择动画文件需要保存的文字</li>
+</ul>
+<blockquote>
+<p>在创建动画文件时，Unity会自动完成以下操作</p>
+<ol>
+<li>创建一个 Animation Controller (动画状态机) 资源</li>
+<li>将创建的动画文件添加到Animation Controller中</li>
+<li>为动画添加Animator组件</li>
+<li>为Animator组件关联 Animator Controller文件</li>
+</ol>
+</blockquote>
+<h2 id="7、有限状态机"><a href="#7、有限状态机" class="headerlink" title="7、有限状态机"></a>7、有限状态机</h2><p>当满足某个条件时，就切换一个状态，且状态是有限的</p>
+<p><strong>动作</strong>系统和<strong>AI</strong>系统，都需要用到有限状态机</p>
+<h3 id="7-1-动画状态机"><a href="#7-1-动画状态机" class="headerlink" title="7.1 动画状态机"></a>7.1 动画状态机</h3><p>创建动画状态机</p>
+<ol>
+<li>为场景中的物体创建动画时，会自动创建动画状态机(Animator Contorller)</li>
+<li>也可以在Project窗口中右键创建Animator Contorller</li>
+</ol>
+<p>动画状态机面板</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220407170333210.png" class="" title="image-20220407170333210">
+<p>Layers：动画层级页签，不同层级可以添加多个动画，权重(Weight)高的层级会覆盖低层级</p>
+<p>Parametes：参数页签，为动画状态机添加<strong>控制状态</strong>切换的参数</p>
+<ul>
+<li>Float：当大于，或者小于该数时，可以满足条件</li>
+<li>int：当大于、小于、等于、或不等于该数时，可以满足条件</li>
+<li>bool：判断T OR F ，满足条件</li>
+<li>trigger：没有条件判断，点击后会<strong>自动切换回来</strong>，适用于来换切换状态的情况</li>
+</ul>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220407170801456.png" class="" title="image-20220407170801456">
+<p>为动画状态机添加动画</p>
+<ol>
+<li>在动画状态机面板右键 Create State，选中Empty 创建空状态</li>
+<li>再为空状态的Inspector面板中的Motion添加动画</li>
+</ol>
+<h3 id="7-2-Animator"><a href="#7-2-Animator" class="headerlink" title="7.2 Animator"></a>7.2 Animator</h3><p>参数面板</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220407211434549.png" class="" title="image-20220407211434549">
+<p><strong>Animator中的API</strong></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Animator myAnim;</span><br><span class="line">myAnim = <span class="keyword">this</span>.GetComponent&lt;Animator&gt;();</span><br><span class="line"></span><br><span class="line">myAnim.SetFloat(<span class="string">&quot;条件名&quot;</span>,<span class="number">2f</span>);</span><br><span class="line">myAnim.SetInteger(<span class="string">&quot;条件名&quot;</span>,<span class="number">2</span>);</span><br><span class="line">myAnim.SetBool(<span class="string">&quot;条件m&quot;</span>,<span class="literal">true</span>);</span><br><span class="line">myAnim.SetTrigger(<span class="string">&quot;条件名&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="8、2D动画"><a href="#8、2D动画" class="headerlink" title="8、2D动画"></a>8、2D动画</h2><h3 id="序列帧动画"><a href="#序列帧动画" class="headerlink" title="序列帧动画"></a>序列帧动画</h3><p>在一个循环中按 时间间隔 不停的切换显示的图片</p>
+<p>通过代码制作序列帧动画</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Sprite[] sprs;	<span class="comment">//声明Sprite数组，存放序列帧动画</span></span><br><span class="line"><span class="keyword">private</span> SpriteRenderer sr;</span><br><span class="line"><span class="keyword">private</span> <span class="built_in">float</span> time =<span class="number">0</span>;	<span class="comment">//计时来循环切换图片</span></span><br><span class="line"><span class="keyword">private</span> <span class="built_in">int</span> nowIndex = <span class="number">0</span>;	<span class="comment">//数组索引</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//为脚本所依附对象添加SpriteRenderer组件</span></span><br><span class="line">	sr = <span class="keyword">this</span>.GetComponent&lt;SpriteRenderer&gt;();</span><br><span class="line">    sr.sprite = sprs[nowIndex];	<span class="comment">//将数组中的第一张图片取出</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    time += Time.deltaTime;</span><br><span class="line">    <span class="keyword">if</span>(time &gt;= <span class="number">0.03</span>)&#123;	<span class="comment">//time大于30ms就切换图片</span></span><br><span class="line">        nowIndex++;</span><br><span class="line">        <span class="keyword">if</span>(nowIndex &gt;= Sprs.Length)&#123;<span class="comment">//若数组中的图片播放完毕，则重复播放</span></span><br><span class="line">            nowIndex = <span class="number">0</span>;</span><br><span class="line">            sr.sprite = sprs[nowIndex];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Animation 窗口制作序列帧动画</p>
+<p>方法一：</p>
+<ol>
+<li>创建一个空物体</li>
+<li>在Animation窗口 创建一个动画</li>
+<li>将动画文件的Inspector面板，更改为Debug面板，能通过<strong>Sample Rate</strong>修改帧数</li>
+<li>将需要的制成动画的 <strong>序列帧图片</strong> <strong>拖到</strong>动画窗口中</li>
+</ol>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220408140045898.png" class="" title="image-20220408140045898">
+<p>方法二：</p>
+<p>直接将序列帧图片拖入到Hierarchy层级窗口中，一般用于制作第一个动画</p>
+<p>示例：</p>
+<p>为人物添加待机、行走、跳跃等动画</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PlayerMove</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> runSpeed = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> upForce = <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">private</span> Rigidbody2D myRigidbody;</span><br><span class="line">    <span class="keyword">private</span> Animator myAnim;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        myRigidbody = <span class="keyword">this</span>.GetComponent&lt;Rigidbody2D&gt;();</span><br><span class="line">        <span class="comment">//为对象依附动画状态机组件</span></span><br><span class="line">        myAnim = <span class="keyword">this</span>.GetComponent&lt;Animator&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Run();</span><br><span class="line">        <span class="comment">//按住时，会播放动画</span></span><br><span class="line">        <span class="keyword">if</span> (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))</span><br><span class="line">        &#123;</span><br><span class="line">            myAnim.SetBool(<span class="string">&quot;RunBool&quot;</span>, <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            myAnim.SetBool(<span class="string">&quot;RunBool&quot;</span>, <span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Run</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//通过AD键控制水平方向</span></span><br><span class="line">        <span class="built_in">float</span> direction = Input.GetAxis(<span class="string">&quot;Horizontal&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (direction &lt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//当按下a时，将自身坐标改为-180°</span></span><br><span class="line">            <span class="keyword">this</span>.transform.rotation = Quaternion.AngleAxis(<span class="number">-180</span>, Vector2.up);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(direction &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//当按下d时，将自身坐标改为0°</span></span><br><span class="line">            <span class="keyword">this</span>.transform.rotation = Quaternion.AngleAxis(<span class="number">0</span>, Vector2.up);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//利用给与人物速度去控制移动。由于重力的存在，所以不能无视人物Y轴的速度，不然人物在Y轴做自由落体运动</span></span><br><span class="line">        <span class="keyword">if</span>(direction != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            myRigidbody.velocity = <span class="keyword">new</span> Vector2(runSpeed * direction, myRigidbody.velocity.y);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//按空格时给一个向上的力，使其跳跃</span></span><br><span class="line">        <span class="keyword">if</span> (Input.GetKeyDown(KeyCode.Space))</span><br><span class="line">        &#123;</span><br><span class="line">            myRigidbody.AddForce(Vector2.up * upForce);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果Y轴上有速度，就播放跳跃动画</span></span><br><span class="line">        <span class="keyword">if</span> (myRigidbody.velocity.y != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            myAnim.SetBool(<span class="string">&quot;JumpBool&quot;</span>,<span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            myAnim.SetBool(<span class="string">&quot;JumpBool&quot;</span>, <span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="2D骨骼动画"><a href="#2D骨骼动画" class="headerlink" title="2D骨骼动画"></a>2D骨骼动画</h3><p>将一张图片分割为n个部位，为每个部位绑定骨骼，就能控制骨骼旋转移动</p>
+<p>达到最少的2D美术资源做出流畅的2D动画效果</p>
+<p>主要制作方式</p>
+<ol>
+<li>利用Unity2018新功能 <strong>2D Animation</strong> 工具制作</li>
+<li>利用跨平台骨骼动画制作工具 <strong>Spine</strong> 制作</li>
+</ol>
+<p>Skinning Editor 主要参数</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220408150232830.png" class="">
+<p><strong>创建骨骼相关</strong></p>
+<p>创建骨骼有三种方式</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220408150314704.png" class="" title="image-20220408150314704">
+<p><strong>蒙皮相关</strong></p>
+<p>使用蒙皮时，先自动，再手动</p>
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/blog/Unity%E6%A0%B8%E5%BF%83/image-20220408151452607.png" class="">
+<p><strong>骨骼动画的使用</strong></p>
+<ul>
+<li>将绑定好骨骼的图片导入场景<ol>
+<li>为其添加<strong>Sprite Skin</strong> 脚本</li>
+<li>点击<strong>Sprite Skin</strong> 脚本上的<strong>Create Bones</strong>为其添加骨骼</li>
+</ol>
+</li>
+</ul>
+<p><strong>图集图片骨骼编辑</strong></p>
+<ol>
+<li>将图集的Sprite Mode 设置为<strong>Multiple</strong></li>
+<li>将图集切片</li>
+<li>为切片图集绑定骨骼和蒙皮</li>
+<li>在场景中添加切片图片的根对象</li>
+<li>将图片拼凑起来，并注意身体各部位的父子关系</li>
+<li>在图片的Additional Settings 中修改图片的层级</li>
+</ol>
+<h3 id="反向动力学IK"><a href="#反向动力学IK" class="headerlink" title="反向动力学IK"></a>反向动力学IK</h3><p>和骨骼动画恰好相反，子节点带动父节点</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/media/top_img.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/blog/Unity%E5%9F%BA%E7%A1%80%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/media/top_img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Unity基础程序框架</div></div></a></div><div class="next-post pull-right"><a href="/blog/Unity-3d%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"><img class="next-cover" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/media/top_img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Unity-3d数学基础</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://img1.baidu.com/it/u=223483055,1110828441&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=400&amp;h=400" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Chou</div><div class="author-info__description">这个人很懒，什么也没有写~</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div></div><a class="button--animated" id="card-info-btn" href="https://github.com/zYidian"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:a790623778@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">你这个年纪怎么睡得着jio？</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%9B%BE%E7%89%87%E5%AF%BC%E5%85%A5%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">1、图片导入设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%9B%BE%E7%89%87%E5%AF%BC%E5%85%A5%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 图片导入概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%BA%B9%E7%90%86%E7%B1%BB%E5%9E%8B%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 纹理类型设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81Sprite"><span class="toc-number">2.</span> <span class="toc-text">2、Sprite</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-SpriteEditor"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 SpriteEditor</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Muleiple-%E5%9B%BE%E9%9B%86%E5%85%83%E7%B4%A0%E5%88%86%E5%89%B2"><span class="toc-number">2.1.1.</span> <span class="toc-text">Muleiple 图集元素分割</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Sprite-Renderer"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 Sprite Renderer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Sprite-Creator"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 Sprite Creator</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%812D%E7%89%A9%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">3、2D物理系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2D%E5%88%9A%E4%BD%93"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 2D刚体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%89%A9%E7%90%86%E6%9D%90%E8%B4%A8"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 物理材质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E6%81%92%E5%AE%9A%E5%8A%9B"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 恒定力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%95%88%E5%BA%94%E5%99%A8"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 效应器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81SpriteShape"><span class="toc-number">4.</span> <span class="toc-text">4、SpriteShape</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81Tilemap"><span class="toc-number">5.</span> <span class="toc-text">5、Tilemap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Tilemap%E7%9A%84%E6%9C%80%E5%B0%8F%E5%8D%95%E4%BD%8D%E2%80%94%E7%93%A6%E7%89%87"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 Tilemap的最小单位—瓦片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E7%93%A6%E7%89%87%E8%B0%83%E8%89%B2%E6%9D%BF%E7%AA%97%E5%8F%A3"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 瓦片调色板窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E7%93%A6%E7%89%87%E5%9C%B0%E5%9B%BE%E5%85%B3%E9%94%AE%E8%84%9A%E6%9C%AC%E5%92%8C%E7%A2%B0%E6%92%9E%E5%99%A8"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 瓦片地图关键脚本和碰撞器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E7%A4%BA%E4%BE%8B"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81Animation"><span class="toc-number">6.</span> <span class="toc-text">6、Animation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%88%9B%E5%BB%BA%E7%BC%96%E8%BE%91Animation"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 创建编辑Animation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-number">7.</span> <span class="toc-text">7、有限状态机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E5%8A%A8%E7%94%BB%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-number">7.1.</span> <span class="toc-text">7.1 动画状态机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-Animator"><span class="toc-number">7.2.</span> <span class="toc-text">7.2 Animator</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E3%80%812D%E5%8A%A8%E7%94%BB"><span class="toc-number">8.</span> <span class="toc-text">8、2D动画</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%B8%A7%E5%8A%A8%E7%94%BB"><span class="toc-number">8.1.</span> <span class="toc-text">序列帧动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2D%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB"><span class="toc-number">8.2.</span> <span class="toc-text">2D骨骼动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E5%8A%A8%E5%8A%9B%E5%AD%A6IK"><span class="toc-number">8.3.</span> <span class="toc-text">反向动力学IK</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/blog/Unity%E5%9F%BA%E7%A1%80%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" title="Unity基础程序框架"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/media/top_img.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Unity基础程序框架"/></a><div class="content"><a class="title" href="/blog/Unity%E5%9F%BA%E7%A1%80%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" title="Unity基础程序框架">Unity基础程序框架</a><time datetime="2022-06-17T03:07:29.000Z" title="发表于 2022-06-17 11:07:29">2022-06-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/blog/Unity%E6%A0%B8%E5%BF%83/" title="Unity核心"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/media/top_img.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Unity核心"/></a><div class="content"><a class="title" href="/blog/Unity%E6%A0%B8%E5%BF%83/" title="Unity核心">Unity核心</a><time datetime="2022-06-17T03:05:34.000Z" title="发表于 2022-06-17 11:05:34">2022-06-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/blog/Unity-3d%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/" title="Unity-3d数学基础"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/media/top_img.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Unity-3d数学基础"/></a><div class="content"><a class="title" href="/blog/Unity-3d%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/" title="Unity-3d数学基础">Unity-3d数学基础</a><time datetime="2022-06-17T03:04:03.000Z" title="发表于 2022-06-17 11:04:03">2022-06-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/blog/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE02/" title="二分查找（下）：如何快速定位IP对应的省份地址？"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/media/top_img.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二分查找（下）：如何快速定位IP对应的省份地址？"/></a><div class="content"><a class="title" href="/blog/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE02/" title="二分查找（下）：如何快速定位IP对应的省份地址？">二分查找（下）：如何快速定位IP对应的省份地址？</a><time datetime="2022-06-11T23:36:41.000Z" title="发表于 2022-06-12 07:36:41">2022-06-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/blog/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE01/" title="二分查找（上）：如何用最省内存的方式实现快速查找功能？"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="/media/top_img.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二分查找（上）：如何用最省内存的方式实现快速查找功能？"/></a><div class="content"><a class="title" href="/blog/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE01/" title="二分查找（上）：如何用最省内存的方式实现快速查找功能？">二分查找（上）：如何用最省内存的方式实现快速查找功能？</a><time datetime="2022-06-10T00:14:47.000Z" title="发表于 2022-06-10 08:14:47">2022-06-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Chou</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      true && mermaid.init()
+    })
+  }
+}</script></div><div class="aplayer no-destroy" data-id="7675104902" data-server="tencent" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2d_models/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2d_models/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2d_models/assets/wanko.model.json"},"display":{"position":"left","width":100,"height":150,"hOffset":-10,"vOffset":40},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body></html>
